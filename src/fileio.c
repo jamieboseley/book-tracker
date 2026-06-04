@@ -1,7 +1,6 @@
 #include "fileio.h"
 
 
-
 /**
  * [fileio.c]
  * Function: openFile
@@ -12,9 +11,9 @@
  * Example: FILE *fh = fopen("data.csv", "r");
  * Effects: None.
  * Return: (FILE) The file pointer of the file from the specified name or NULL if unsuccessful.
- */
- FILE *openFile (const char *filename, const char *mode)
- {
+*/
+FILE *openFile (const char *filename, const char *mode)
+{
     // Verify a valid mode is present.
     if (mode != "r" && mode != "w" && mode != "a") return NULL;
 
@@ -23,11 +22,54 @@
     if (!fh) return NULL;
 
     return fh;
- }
+}
 
 
 
-// Book importFromFile (const char *filename, int *record_count);
+// TO DO: Add design recipe.
+int getRecordCount (FILE *fh)
+{
+    int record_count = 0;
+    char buffer[MAX_BUFFER_SIZE];
+
+    // TO DO: Add ability to read and skip header (if applicable).
+
+    while (fgets(buffer, MAX_BUFFER_SIZE, fh)) record_count++;
+
+    return record_count;
+}
+
+
+
+// TO DO: Add design recipe.
+Book *importFromFile (const char *filename, int *record_count)
+{
+    // Open file.
+    FILE *fh = openFile(filename, "r");
+    if (!fh) return NULL;
+
+    // TO DO: Add ability to read and skip header (if applicable).
+
+    // Get record count.
+    *record_count = getRecordCount(fh);
+
+    // Ensure records exist.
+    if (record_count <= 0) return NULL;
+
+    rewind(fh);
+
+    // Allocate memory.
+    Book *books = malloc(sizeof(Book) * *(record_count));
+    if (!books) return NULL;
+
+    // Read data directly into array.
+    int i = 0;
+    while (fscanf(fh, "%s,%s,%s,%d,%.2lf,%d". books[i].title, books[i].author, books[i].genre, &books[i].page_count, &books[i].price, &books[i].rating) == 6) i++;
+
+    fclose(fh);
+
+    return books;
+}
 
 
 
