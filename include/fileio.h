@@ -1,7 +1,6 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
-#include <stdio.h>
 #include "book.h"
 
 #define MAX_BUFFER_SIZE 250

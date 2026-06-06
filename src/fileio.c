@@ -1,6 +1,7 @@
 #include "fileio.h"
 
 
+
 /**
  * [fileio.c]
  * Function: openFile
@@ -26,7 +27,16 @@ FILE *openFile (const char *filename, const char *mode)
 
 
 
-// TO DO: Add design recipe.
+/**
+ * [fileio.c]
+ * Function: getRecordCount
+ * Purpose: Counts and returns the number of records in a file.
+ * Parameters:
+ *   - fh (FILE): The file pointer of the file holding records.
+ * Example: int num = getRecordCount(fh);
+ * Effects: Moves file pointer to EOF.
+ * Return: (int) The number of records in the file.
+*/
 int getRecordCount (FILE *fh)
 {
     int record_count = 0;
@@ -41,7 +51,17 @@ int getRecordCount (FILE *fh)
 
 
 
-// TO DO: Add design recipe.
+/**
+ * [fileio.c]
+ * Function: importFromFile
+ * Purpose: Imports records from a file into a dynamically allocated array of structs.
+ * Parameters:
+ *   - filename (char): The name of the file.
+ *   - record_count (int): The number of recorsds in a file.
+ * Example: Book books = importFromFile("file.csv", &record_count);
+ * Effects: ???
+ * Return: (Book) The dynamically allocated struct of records.
+*/
 Book *importFromFile (const char *filename, int *record_count)
 {
     // Open file.
@@ -59,16 +79,16 @@ Book *importFromFile (const char *filename, int *record_count)
     rewind(fh);
 
     // Allocate memory.
-    Book *books = malloc(sizeof(Book) * *(record_count));
-    if (!books) return NULL;
+    Book *records = malloc(sizeof(Book) * *(record_count));
+    if (!records) return NULL;
 
     // Read data directly into array.
     int i = 0;
-    while (fscanf(fh, "%s,%s,%s,%d,%.2lf,%d". books[i].title, books[i].author, books[i].genre, &books[i].page_count, &books[i].price, &books[i].rating) == 6) i++;
+    while (fscanf(fh, "%s,%s,%s,%d,%.2lf,%d". records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
 
     fclose(fh);
 
-    return books;
+    return records;
 }
 
 

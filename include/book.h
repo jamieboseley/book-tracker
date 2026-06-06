@@ -1,6 +1,9 @@
 #ifndef BOOK_H
 #define BOOK_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
 // Book structure.
 typedef struct {
     char *title;
@@ -12,6 +15,8 @@ typedef struct {
 } Book;
 
 // Function prototypes.
+void displayRecords (Book *records, int record_count);
+
 
 
 #endif
