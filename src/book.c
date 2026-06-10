@@ -23,4 +23,13 @@ void displayRecords (Book *records, int record_count)
     }
 
     // TO DO: Add clean dynamic spacing.
+
+    printf("Title,Author,Genre,PageCount,Price,Rating\n");
+
+    // Index through each record and print.
+    for (int i = 0; i < record_count; i++)
+    {
+        // TO DO: Recognize and handle empty fields.
+        printf("%s,%s,%s,%d,%.2lf,%d", books[i].title, books[i].author, books[i].genre, books[i].page_count, books[i].price, books[i].rating);
+    }
 }
