@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SUCCESS 0
+#define FAIL 1
+
 // Book structure.
 typedef struct {
     char *title;
@@ -16,7 +19,6 @@ typedef struct {
 
 // Function prototypes.
 void displayRecords (Book *records, int record_count);
-
 
 
 #endif

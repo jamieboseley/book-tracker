@@ -84,7 +84,7 @@ Book *importFromFile (const char *filename, int *record_count)
 
     // Read data directly into array.
     int i = 0;
-    while (fscanf(fh, "%s,%s,%s,%d,%.2lf,%d". records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
+    while (fscanf(fh, "%s,%s,%s,%d,%.2lf,%d", records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
 
     fclose(fh);
 
@@ -104,14 +104,14 @@ Book *importFromFile (const char *filename, int *record_count)
  * Effects: ???
  * Return: 1 if data was exported succesfully. 0 if the data was not exported.
  */
-int exportToFile (Book books, int record_count)
+int exportToFile (Book *records, int record_count)
 {
     // Verify a valid record count.
-    if (record_count <= 0) return 0;
+    if (record_count <= 0) return FAIL;
 
     // Return 0 if the file could not be opened.
     FILE *export_fh = openFile("data.csv", "w");
-    if (!export_fh) return 0;
+    if (!export_fh) return FAIL;
 
     // Print header row to file.
     fprintf(export_fh, "Title,Author,Genre,PageCount,Price,Rating\n");
@@ -119,8 +119,67 @@ int exportToFile (Book books, int record_count)
     // Write user data to file.
     for (int i = 0; i < record_count; i++)
     {
-        fprintf(export_fh, "%s,%s,%s,%d,%.2lf,%d", books[i].title, books[i].author, books[i].genre, books[i].page_count, books[i].price, books[i].rating);
+        fprintf(export_fh, "%s,%s,%s,%d,%.2lf,%d", records[i].title, records[i].author, records[i].genre, records[i].page_count, records[i].price, records[i].rating);
     }
 
-    return 1;
+    return SUCCESS;
 }
+
+
+
+/**
+ * [fileio.c]
+ * Function: importFromBinary
+ * Purpose: Imports records from a binary file into a dynamically allocated array.
+ * Parameters:
+ *   - filename (char): The name of the file.
+ *   - record_count (int): The number of user entries.
+ * Example: importFromBinary("bin_records.bin", &record_count);
+ * Effects: ???
+ * Return: Dynamically allocated array of records or NULL if unsuccessful.
+ */
+Book *importFromBinary (const char *filename, int *record_count)
+{
+    // Open binary file.
+    FILE *bin_fh = openFile(filename, "r");
+    if (!bin_fh) return NULL;
+
+    // Get record count.
+    fseek(bin_fh, 0, SEEK_END);
+    long position = ftell(bin_fh);
+    *record_count = position / sizeof(Book);
+
+    // Allocate an array of structs.
+    Book *records = malloc(sizeof(Book) * (*record_count));
+    if (!records) return NULL;
+
+    // Read records into the array.
+    fread(records, sizeof(Book), (*record_count), bin_fh);
+
+    fclose(bin_fh);
+    
+    return records;
+}
+
+
+
+
+int exportToBinary (Book *records, int record_count)
+{
+    // TO DO: Handle filenames.
+    // Open binary file.
+    FILE *bin_fh = openFile("test.bin", "r");
+    if (!bin_fh) return FAIL;
+
+    // Attempt to write all records to binary file.
+    if (fwrite(records, sizeof(Book), record_count, bin_fh) == record_count) 
+    {
+        fclose(bin_fh);
+        return SUCCESS;
+    }
+    
+    // TO DO: Finish exportToBinary.
+
+    
+}
+

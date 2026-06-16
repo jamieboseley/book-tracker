@@ -30,6 +30,7 @@ void displayRecords (Book *records, int record_count)
     for (int i = 0; i < record_count; i++)
     {
         // TO DO: Recognize and handle empty fields.
-        printf("%s,%s,%s,%d,%.2lf,%d", books[i].title, books[i].author, books[i].genre, books[i].page_count, books[i].price, books[i].rating);
+        printf("%s,%s,%s,%d,%.2lf,%d", records[i].title, records[i].author, records[i].genre, records[i].page_count, records[i].price, records[i].rating);
     }
 }
+
