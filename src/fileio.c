@@ -1,4 +1,4 @@
-#include "fileio.h"
+#include "../include/fileio.h"
 
 
 
@@ -15,9 +15,6 @@
 */
 FILE *openFile (const char *filename, const char *mode)
 {
-    // Verify a valid mode is present.
-    if (mode != "r" && mode != "w" && mode != "a") return NULL;
-
     // Return NULL if file cannot successfully be opened.
     FILE *fh = fopen(filename, mode);
     if (!fh) return NULL;
@@ -74,17 +71,17 @@ Book *importFromFile (const char *filename, int *record_count)
     *record_count = getRecordCount(fh);
 
     // Ensure records exist.
-    if (record_count <= 0) return NULL;
+    if (*record_count <= 0) return NULL;
 
     rewind(fh);
 
     // Allocate memory.
-    Book *records = malloc(sizeof(Book) * *(record_count));
+    Book *records = malloc(sizeof(Book) * (*record_count));
     if (!records) return NULL;
 
     // Read data directly into array.
     int i = 0;
-    while (fscanf(fh, "%s,%s,%s,%d,%.2lf,%d", records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
+    while (fscanf(fh, "%99[^,],%99[^,],%99[^,],%d,%lf,%d", records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
 
     fclose(fh);
 
@@ -102,7 +99,7 @@ Book *importFromFile (const char *filename, int *record_count)
  *   - record_count (int): The number of user entries.
  * Example: exportToFile(books, 20);
  * Effects: ???
- * Return: 1 if data was exported succesfully. 0 if the data was not exported.
+ * Return: 0 if data was exported succesfully. 1 if the data was not exported.
  */
 int exportToFile (Book *records, int record_count)
 {
@@ -134,7 +131,7 @@ int exportToFile (Book *records, int record_count)
  * Parameters:
  *   - filename (char): The name of the file.
  *   - record_count (int): The number of user entries.
- * Example: importFromBinary("bin_records.bin", &record_count);
+ * Example: Book *records = importFromBinary("bin_records.bin", &record_count);
  * Effects: ???
  * Return: Dynamically allocated array of records or NULL if unsuccessful.
  */
@@ -163,7 +160,17 @@ Book *importFromBinary (const char *filename, int *record_count)
 
 
 
-
+/**
+ * [fileio.c]
+ * Function: exportToBinary
+ * Purpose: Exports records in one write to a binary file.
+ * Parameters:
+ *   - records (Book): The array of records.
+ *   - record_count (int): The number of user entries.
+ * Example: int status = exportToBinary(records, record_count);
+ * Effects: ???
+ * Return: 0 for success or 1 for failed export.
+ */
 int exportToBinary (Book *records, int record_count)
 {
     // TO DO: Handle filenames.
@@ -172,14 +179,16 @@ int exportToBinary (Book *records, int record_count)
     if (!bin_fh) return FAIL;
 
     // Attempt to write all records to binary file.
-    if (fwrite(records, sizeof(Book), record_count, bin_fh) == record_count) 
+    if (fwrite(records, sizeof(Book), record_count, bin_fh) == (size_t)record_count) 
     {
         fclose(bin_fh);
         return SUCCESS;
     }
-    
-    // TO DO: Finish exportToBinary.
-
-    
+    else
+    {
+        fclose(bin_fh);
+        return FAIL;
+    }
+    // TO DO: Delete file if export failed?
 }
 

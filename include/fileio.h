@@ -1,7 +1,8 @@
 #ifndef FILEIO_H
 #define FILEIO_H
 
-#include "book.h"
+#include "../include/book.h"
+#include <string.h>
 
 #define MAX_BUFFER_SIZE 250
 
@@ -15,5 +16,3 @@ int exportToBinary (Book *records, int record_count);
 
 
 #endif
-
-// TO DO: Add export to binary?
