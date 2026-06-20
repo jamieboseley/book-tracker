@@ -69,7 +69,6 @@ Book *importFromFile (const char *filename, int *record_count)
 
     // Get record count.
     *record_count = getRecordCount(fh);
-
     // Ensure records exist.
     if (*record_count <= 0) return NULL;
 
@@ -81,7 +80,7 @@ Book *importFromFile (const char *filename, int *record_count)
 
     // Read data directly into array.
     int i = 0;
-    while (fscanf(fh, "%99[^,],%99[^,],%99[^,],%d,%lf,%d", records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
+    while (i < (*record_count) && fscanf(fh, " %99[^,],%29[^,],%19[^,],%d,%lf,%d", records[i].title, records[i].author, records[i].genre, &records[i].page_count, &records[i].price, &records[i].rating) == 6) i++;
 
     fclose(fh);
 

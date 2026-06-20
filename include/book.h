@@ -6,12 +6,15 @@
 
 #define SUCCESS 0
 #define FAIL 1
+#define MAX_TITLE_LEN 100
+#define MAX_AUTHOR_LEN 30
+#define MAX_GENRE_LEN 20
 
 // Book structure.
 typedef struct {
-    char *title;
-    char *author;
-    char *genre;
+    char title[MAX_TITLE_LEN];
+    char author[MAX_AUTHOR_LEN];
+    char genre[MAX_GENRE_LEN];
     int page_count;
     double price;
     int rating;

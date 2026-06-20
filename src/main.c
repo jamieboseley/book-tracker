@@ -3,7 +3,7 @@
 int main (void)
 {
     int record_count = 0;
-    Book *records = importFromFile("../data/test.csv", &record_count);
+    Book *records = importFromFile("data/test.csv", &record_count);
     if (!records) 
     {
         printf("Error\n");
